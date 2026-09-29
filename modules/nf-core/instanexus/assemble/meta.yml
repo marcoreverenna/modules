@@ -1,62 +1,63 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "instanexus_assemble"
-description: write your description here
+description: |
+  Assemble de novo peptide sequences from a filtered peptide-spectrum match (PSM)
+  table into protein scaffolds with the InstaNexus assembly stage. The assembly
+  algorithm (e.g. de Bruijn graph or greedy overlap) and its k-mer, overlap and
+  scaffold length settings are selected through `ext.args`.
 keywords:
-  - sort
-  - example
-  - genomics
+  - proteomics
+  - de novo protein sequencing
+  - assembly
+  - de bruijn graph
+  - peptides
+  - scaffolds
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "instanexus":
       description: "Generalizable direct protein sequencing with InstaNexus."
       homepage: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
       documentation: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
       tool_dev_url: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
-      doi: ""
+      doi: "10.1101/2025.07.25.666861"
       licence: ["MIT"]
-      identifier: null
+      identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - csv:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+          Filtered PSM table, e.g. as produced by the InstaNexus preprocessing
+          stage. Must contain a `cleaned_preds` column with the peptide sequences.
+        pattern: "*.csv"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: "http://edamontology.org/format_3752" # CSV
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  scaffolds:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*.scaffolds.fasta":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Assembled protein scaffold sequences
+          pattern: "*.scaffolds.fasta"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: "http://edamontology.org/format_1929" # FASTA
   versions_instanexus:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "instanexus":
+      - instanexus:
           type: string
           description: The name of the tool
-      - "instanexus --version":
+      - python -c "import importlib.metadata as m; print(m.version('instanexus'))":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -68,7 +69,7 @@ topics:
       - instanexus:
           type: string
           description: The name of the tool
-      - instanexus --version:
+      - python -c "import importlib.metadata as m; print(m.version('instanexus'))":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -1,0 +1,76 @@
+{
+    "bsa - csv - dbg": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.scaffolds.fasta",
+                    [
+                        "DTHKSELAHRFKD",
+                        "FLSHKDDSPDLPK",
+                        "KHKPKATEEQLKTV",
+                        "TLPDTEKQLKKQTALVE",
+                        "VLHEKTPVSEKVT"
+                    ]
+                ]
+            ],
+            {
+                "versions_instanexus": [
+                    [
+                        "INSTANEXUS_ASSEMBLE",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-28T14:49:51.158931",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "bsa - csv - dbg - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.scaffolds.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "INSTANEXUS_ASSEMBLE",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ],
+                "scaffolds": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.scaffolds.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_instanexus": [
+                    [
+                        "INSTANEXUS_ASSEMBLE",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-28T14:49:54.004669",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}
