@@ -1,0 +1,95 @@
+{
+    "bsa - csv - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cleaned.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "INSTANEXUS_PREPROCESS",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ],
+                "csv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cleaned.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_instanexus": [
+                    [
+                        "INSTANEXUS_PREPROCESS",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-30T11:39:36.818097",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "bsa - csv": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.cleaned.csv:md5,5787118ea84305c6718a4aad9d3730fc"
+                ]
+            ],
+            {
+                "versions_instanexus": [
+                    [
+                        "INSTANEXUS_PREPROCESS",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-30T11:39:33.845878",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "bsa - csv - contaminants - metadata": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.cleaned.csv:md5,83f7afcfe05af268a9b941da5534f551"
+                ]
+            ],
+            {
+                "versions_instanexus": [
+                    [
+                        "INSTANEXUS_PREPROCESS",
+                        "instanexus",
+                        "0.2.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-30T11:39:30.080771",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}

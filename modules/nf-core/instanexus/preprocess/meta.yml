@@ -1,62 +1,92 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "instanexus_preprocess"
-description: write your description here
+description: |
+  Filter a de novo peptide-spectrum match (PSM) table with the InstaNexus
+  preprocessing stage before assembly. Peptide sequences are stripped of
+  modification tags, PSMs matching contaminant sequences are removed, and
+  confidence and FDR thresholds (`--conf`, `--fdr`, set through `ext.args`) are
+  applied. With sample metadata, PSMs are also annotated with their protease.
 keywords:
-  - sort
-  - example
-  - genomics
+  - proteomics
+  - de novo protein sequencing
+  - peptide-spectrum matches
+  - filtering
+  - contaminants
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "instanexus":
       description: "Generalizable direct protein sequencing with InstaNexus."
       homepage: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
       documentation: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
       tool_dev_url: "https://github.com/Multiomics-Analytics-Group/InstaNexus"
-      doi: ""
+      doi: "10.1016/j.mcpro.2026.101547"
       licence: ["MIT"]
-      identifier: null
+      identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - csv:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+          InstaNovo PSM table (CSV) with a `prediction_untokenised` or `preds`
+          peptide column and a `calibrated_confidence` or `log_probs` confidence
+          column. The InstaNexus input-contract CSV, a subset of these columns, is
+          also accepted.
+          InstaNexus derives the sample name from the file stem (the name without
+          `.csv`), independently of `meta.id` and `ext.prefix`:
+          the stem selects the entry in `metadata_json`; a stem of exactly `bsa`
+          keeps the bovine serum albumin precursor out of the contaminant filter;
+          and an optional `<stem>_quant_scores.csv` next to the input would be
+          merged in, but the module does not stage it, so peptide quantification
+          is not supported.
+        pattern: "*.csv"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: "http://edamontology.org/format_3752" # CSV
+  - contaminants:
+      type: file
+      description: |
+        Optional FASTA of contaminant protein sequences. PSMs whose peptide is a
+        substring of any contaminant sequence are removed. Pass `[]` to omit.
+      pattern: "*.{fasta,fa}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
+  - metadata_json:
+      type: file
+      description: |
+        Optional sample metadata JSON keyed by the input file stem, listing the
+        proteases used for each sample. Enables protease annotation from
+        `experiment_name`. Samples with several chain entries require
+        `--chain <chain>` in `ext.args`. Pass `[]` to omit.
+      pattern: "*.json"
+      ontologies:
+        - edam: "http://edamontology.org/format_3464" # JSON
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  csv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*.cleaned.csv":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: |
+            Filtered PSM table with the cleaned peptide sequences in the
+            `cleaned_preds` column, ready for assembly
+          pattern: "*.cleaned.csv"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: "http://edamontology.org/format_3752" # CSV
   versions_instanexus:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "instanexus":
+      - instanexus:
           type: string
           description: The name of the tool
-      - "instanexus --version":
+      - python -c "import importlib.metadata as m; print(m.version('instanexus'))":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -68,7 +98,7 @@ topics:
       - instanexus:
           type: string
           description: The name of the tool
-      - instanexus --version:
+      - python -c "import importlib.metadata as m; print(m.version('instanexus'))":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
